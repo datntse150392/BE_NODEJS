@@ -3,6 +3,8 @@ const cors = require("cors");
 require("dotenv").config();
 const initRoutes = require("./src/routes");
 const app = express();
+// connectionDB
+require("./connectionDB");
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
