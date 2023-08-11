@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon --exec babel-node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,10 @@
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.10",
+    "@babel/core": "^7.22.10",
+    "@babel/node": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
     "sequelize-cli": "^6.6.1"
   }
 }
