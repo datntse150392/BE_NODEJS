@@ -1,17 +1,19 @@
-### GET http://localhost:8080/api/v1/user/
+GET http://localhost:8080/api/v1
 
-# POST http://localhost:8080/api/v1/auth/register
-# Content-Type: application/json
+###
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
 
-# {
-#   "email": "admin2@gmail.com",
-#   "password": "123456"
-# }
+{
+  "email": "admin6@gmail.com",
+  "password": "123434"
+}
 
+###
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
   "email": "admin@gmail.com",
-  "password": "12345326"
+  "password": "12345"
 }
