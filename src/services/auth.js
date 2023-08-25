@@ -54,6 +54,7 @@ export const login = ({ email, password }) =>
       const token = isChecked
         ? jwt.sign(
             {
+              id: response.id,
               email: response.email,
               password: response.password,
               role_code: response.role_code,

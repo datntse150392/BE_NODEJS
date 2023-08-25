@@ -22,3 +22,11 @@ export const notFound = (res) => {
     mes: error.message,
   });
 };
+
+export const notAuth = (err, res) => {
+  const error = createError.Unauthorized(err); // Error 401
+  return res.status(error.status).json({
+    err: 1,
+    mes: error.message,
+  });
+};
