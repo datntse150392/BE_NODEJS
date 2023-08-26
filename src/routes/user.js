@@ -5,9 +5,9 @@ const router = require("express").Router();
 // PUBLIC ROUTES
 
 // PRIVATE ROUTES
-// Sẽ có 2 cách viết middeware
-// router.use(verifyToken);
+// Sẽ có 2 cách viết middeware để check author
+router.use(verifyToken);
 // router.use(isModerator);
-router.get("/", [verifyToken, isAdmin], getCurrent);
+router.get("/", getCurrent);
 
 module.exports = router;

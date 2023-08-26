@@ -14,10 +14,10 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin5@gmail.com",
+  "email": "admin2@gmail.com",
   "password": "123456"
 }
 
 ###
 GET http://localhost:8080/api/v1/user/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbjVAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkTTdaMzN3SUcwdVZQVmZqLllxUlJQdVF3TzllcDJ3MEYxWU5UTE9vcGdDTFdKMGdPbWFuYWUiLCJyb2xlX2NvZGUiOiJSMiIsImlhdCI6MTY5Mjk0MDMyMywiZXhwIjoxNjkzMzcyMzIzfQ.s2LpOwW5yOph8OVo0PgZjFclU3oSuKeCMNwvfQKihS0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbjJAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkODdqNjR5Y2NKUkdaM3NOclJnZjcvdXkybW9Lc3NDZHFQLjBCNGcxa0szdlcxa21LbGIvdEMiLCJyb2xlX2NvZGUiOiJSMSIsImlhdCI6MTY5Mjk0MjMzNCwiZXhwIjoxNjkzMzc0MzM0fQ.nt4iBQbyMmelnmQgI_F_HzzZGZpp3s8nDb6gKD8wvc0
