@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 const db = require("../models");
-
+import { v4 as genarateCode } from "uuid";
 // READ
 export const getBook = ({ page, limit, order, name, available, ...query }) =>
   new Promise(async (resolve, reject) => {
@@ -18,6 +18,14 @@ export const getBook = ({ page, limit, order, name, available, ...query }) =>
       const response = await db.Book.findAndCountAll({
         where: query,
         ...queries,
+        attributes: { exclude: "category_code" },
+        include: [
+          {
+            model: db.Category,
+            attributes: { exclude: "createdAt, updatedAt" },
+            as: "categoryData",
+          },
+        ],
       });
       resolve({
         err: response ? 0 : 1,
@@ -30,5 +38,20 @@ export const getBook = ({ page, limit, order, name, available, ...query }) =>
   });
 
 //CREATE
+export const createNewBook = (body) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.Book.findOrCreate({
+        where: { title: body?.title },
+        defaults: { ...body, id: genarateCode() },
+      });
+      resolve({
+        err: response[1] ? 0 : 1,
+        mes: response[1] ? "Created" : "Cannot create new Book",
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 // UPDATE
 // DELETE
