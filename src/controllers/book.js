@@ -1,10 +1,12 @@
 import joi from "joi";
 import {
-  available,
+  bids,
+  bid,
   category_code,
   image,
   price,
   title,
+  available,
 } from "../helper/joi_schema";
 import { badRequest, interalServerError } from "../middewares/handleError";
 const services = require("../services");
@@ -22,8 +24,6 @@ export const getBook = async (req, res) => {
 export const createNewBook = async (req, res) => {
   try {
     const fileData = req.file;
-
-    console.log(fileData);
     const { error } = joi
       .object({
         available,
@@ -33,6 +33,7 @@ export const createNewBook = async (req, res) => {
         title,
       })
       .validate({ ...req.body, image: fileData?.path });
+
     if (error) {
       // Khi mà lỡ khi client nhập thiếu trường mà lỡ upload ảnh lên cloudinary thì dòng lệnh 39 40 sẽ xóa ảnh đó trên cloud.
       if (fileData) {
@@ -41,6 +42,48 @@ export const createNewBook = async (req, res) => {
       return badRequest(error.details[0].message, res);
     }
     const response = await services.createNewBook(req.body, fileData);
+    return res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    return interalServerError(res);
+  }
+};
+
+export const updateBook = async (req, res) => {
+  try {
+    const fileData = req.file;
+    console.log(fileData?.path);
+    console.log(req.body);
+    const { error } = joi
+      .object({
+        bid,
+      })
+      .validate({ bid: req.body.bid });
+    if (error) {
+      // Khi mà lỡ khi client nhập thiếu trường mà lỡ upload ảnh lên cloudinary thì dòng lệnh 39 40 sẽ xóa ảnh đó trên cloud.
+      if (fileData) {
+        cloudinary.uploader.destroy(fileData.filename);
+      }
+      return badRequest(error.details[0].message, res);
+    }
+    const response = await services.updateBook(req.body, fileData);
+    return res.status(200).json(response);
+  } catch (error) {
+    return interalServerError(res);
+  }
+};
+
+export const deleteBook = async (req, res) => {
+  try {
+    const { error } = joi
+      .object({
+        bids,
+      })
+      .validate(req.query);
+    if (error) {
+      return badRequest(error.details[0].message, res);
+    }
+    const response = await services.deleteBook(req.query.bids);
     return res.status(200).json(response);
   } catch (error) {
     return interalServerError(res);

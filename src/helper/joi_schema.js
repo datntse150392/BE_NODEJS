@@ -23,3 +23,7 @@ export const available = joi.number().required();
 export const category_code = joi.string().uppercase().alphanum().required();
 
 export const image = joi.string().required();
+
+export const bid = joi.string().required();
+
+export const bids = joi.array().required();

@@ -60,4 +60,46 @@ export const createNewBook = (body, fileData) =>
     }
   });
 // UPDATE
+export const updateBook = ({ bid, ...body }, fileData) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      if (fileData) {
+        body.image = fileData?.path;
+      }
+      const response = await db.Book.update(body, {
+        where: {
+          id: bid,
+        },
+      });
+      resolve({
+        err: response[0] > 0 ? 0 : 1,
+        mes:
+          response[0] > 0
+            ? `${response[0]} book updated`
+            : "Cannot update a Book / Book ID not found",
+      });
+      if (fileData && response[0] === 0) {
+        cloudinary.uploader.destroy(fileData.filename);
+      }
+    } catch (error) {
+      reject(error);
+      cloudinary.uploader.destroy(fileData.filename);
+    }
+  });
 // DELETE
+export const deleteBook = (bids) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.Book.destroy({
+        where: {
+          id: bids,
+        },
+      });
+      resolve({
+        err: response > 0 ? 0 : 1,
+        mes: `${response} book(s) deleted`,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
