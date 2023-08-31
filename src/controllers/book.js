@@ -1,5 +1,6 @@
 import joi from "joi";
 import {
+  filename,
   bids,
   bid,
   category_code,
@@ -78,12 +79,16 @@ export const deleteBook = async (req, res) => {
     const { error } = joi
       .object({
         bids,
+        filename,
       })
       .validate(req.query);
     if (error) {
       return badRequest(error.details[0].message, res);
     }
-    const response = await services.deleteBook(req.query.bids);
+    const response = await services.deleteBook(
+      req.query.bids,
+      req.query.filename
+    );
     return res.status(200).json(response);
   } catch (error) {
     return interalServerError(res);

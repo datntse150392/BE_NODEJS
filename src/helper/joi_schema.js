@@ -27,3 +27,5 @@ export const image = joi.string().required();
 export const bid = joi.string().required();
 
 export const bids = joi.array().required();
+
+export const filename = joi.array().required();
