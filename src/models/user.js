@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       avatar: DataTypes.STRING, // kết hợp với nodejs và cloudinary https://cloudinary.com/
       role_code: DataTypes.STRING,
+      refresh_token: DataTypes.STRING,
     },
     {
       sequelize,

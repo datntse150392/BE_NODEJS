@@ -23,10 +23,10 @@ export const notFound = (res) => {
   });
 };
 
-export const notAuth = (err, res) => {
+export const notAuth = (err, res, isExpired) => {
   const error = createError.Unauthorized(err); // Error 401
   return res.status(error.status).json({
-    err: 1,
+    err: isExpired ? 1 : 0,
     mes: error.message,
   });
 };

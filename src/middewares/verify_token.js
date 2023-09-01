@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { notAuth } from "./handleError";
 
 const verifyToken = (req, res, next) => {
@@ -6,10 +6,15 @@ const verifyToken = (req, res, next) => {
   if (!token) return notAuth("Require Authorization", res);
   const access_token = token.split(" ")[1];
   jwt.verify(access_token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return notAuth("Access token maybe expired or invalid", res);
+    const isExpired = err instanceof TokenExpiredError;
+    if (isExpired) {
+      return notAuth("Access token maybe expired", res, isExpired);
+    }
+    if (!isExpired) {
+      return notAuth("Access token maybe invalid", res, isExpired);
+    }
     req.user = user;
     next();
   });
 };
-
 export default verifyToken;

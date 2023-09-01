@@ -18,15 +18,26 @@ export const register = ({ email, password }) =>
           password: hashPassword(password),
         },
       });
-      const token = response[1]
+      const accessToken = response[1]
         ? jwt.sign(
             {
+              id: response[0].id,
               email: response[0].email,
               password: response[0].password,
               role_code: response[0].role_code,
             },
             process.env.JWT_SECRET,
-            { expiresIn: "5d" }
+            { expiresIn: "5s" }
+          )
+        : null;
+      // JWT_SECRET_REFRESH_TOKEN
+      const refreshToken = response[1]
+        ? jwt.sign(
+            {
+              id: response[0].id,
+            },
+            process.env.JWT_SECRER_REFRESH_TOKEN,
+            { expiresIn: "10d" }
           )
         : null;
       resolve({
@@ -34,8 +45,17 @@ export const register = ({ email, password }) =>
         mes: response[1]
           ? "register successfull"
           : "email is already registered",
-        token: token && `Bearer ${token}`,
+        accessToken: accessToken && `Bearer ${accessToken}`,
+        refreshToken: refreshToken && `Bearer ${refreshToken}`,
       });
+      if (refreshToken) {
+        await db.User.update(
+          {
+            refresh_token: refreshToken,
+          },
+          { where: { id: response[0].id } }
+        );
+      }
     } catch (error) {
       reject(error);
     }
@@ -60,7 +80,17 @@ export const login = ({ email, password }) =>
               role_code: response.role_code,
             },
             process.env.JWT_SECRET,
-            { expiresIn: "5d" }
+            { expiresIn: "5s" }
+          )
+        : null;
+      // JWT_SECRET_REFRESH_TOKEN
+      const refreshToken = isChecked
+        ? jwt.sign(
+            {
+              id: response.id,
+            },
+            process.env.JWT_SECRER_REFRESH_TOKEN,
+            { expiresIn: "10d" }
           )
         : null;
       resolve({
@@ -71,7 +101,16 @@ export const login = ({ email, password }) =>
           ? "Password is wrong"
           : "Email has been registered",
         access_token: token && `Bearer ${token}`,
+        refreshToken: refreshToken && `Bearer ${refreshToken}`,
       });
+      if (refreshToken) {
+        await db.User.update(
+          {
+            refresh_token: refreshToken,
+          },
+          { where: { id: response.id } }
+        );
+      }
     } catch (error) {
       reject(error);
     }
