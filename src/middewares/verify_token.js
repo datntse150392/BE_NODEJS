@@ -6,12 +6,14 @@ const verifyToken = (req, res, next) => {
   if (!token) return notAuth("Require Authorization", res);
   const access_token = token.split(" ")[1];
   jwt.verify(access_token, process.env.JWT_SECRET, (err, user) => {
-    const isExpired = err instanceof TokenExpiredError;
-    if (isExpired) {
-      return notAuth("Access token maybe expired", res, isExpired);
-    }
-    if (!isExpired) {
-      return notAuth("Access token maybe invalid", res, isExpired);
+    if (err) {
+      const isExpired = err instanceof TokenExpiredError;
+      if (isExpired) {
+        return notAuth("Access token maybe expired", res, isExpired);
+      }
+      if (!isExpired) {
+        return notAuth("Access token maybe invalid", res, isExpired);
+      }
     }
     req.user = user;
     next();

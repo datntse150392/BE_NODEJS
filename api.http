@@ -30,3 +30,12 @@ GET http://localhost:8080/api/v1/book/?order[]=price&order[]=DESC&limit=2&availa
 
 ###
 GET http://localhost:8080/api/v1/book/
+
+
+###
+POST http://localhost:8080/api/v1/auth/refresh_token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJkYXRudHNlMTUwMzkyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDA4JDdNME44ekZGMlNBODdmb1hMR0t4OE84eHZ4SHpqeG4xcTlXZ3Z1cC4vQ2wzbjRUakpMMkdHIiwicm9sZV9jb2RlIjoiUjMiLCJpYXQiOjE2OTM2NDI5NzYsImV4cCI6MTY5MzY0Mjk4MX0.6065v_4oTzulx7n5TesfcN_01sF_V1m9OSzPEmlVDHY",
+}

@@ -90,7 +90,7 @@ export const login = ({ email, password }) =>
               id: response.id,
             },
             process.env.JWT_SECRER_REFRESH_TOKEN,
-            { expiresIn: "10d" }
+            { expiresIn: "30s" }
           )
         : null;
       resolve({
@@ -112,6 +112,53 @@ export const login = ({ email, password }) =>
         );
       }
     } catch (error) {
+      reject(error);
+    }
+  });
+
+// Refresh Token
+export const refreshToken = (refresh_token) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.User.findOne({
+        where: { refresh_token },
+        raw: true,
+      });
+      if (response) {
+        jwt.verify(
+          refresh_token,
+          process.env.JWT_SECRER_REFRESH_TOKEN,
+          (err) => {
+            if (err) {
+              resolve({
+                err: 1,
+                mes: "Refresh Token Expried. Require Login again!",
+              });
+            } else {
+              const accessToken = jwt.sign(
+                {
+                  id: response.id,
+                  email: response.email,
+                  password: response.password,
+                  role_code: response.role_code,
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: "10s" }
+              );
+              resolve({
+                err: accessToken ? 0 : 1,
+                mes: accessToken
+                  ? "OK"
+                  : "Fail to generate new access token. Let try more times",
+                access_Token: `Bearer ${accessToken}`,
+                refresh_token: refresh_token,
+              });
+            }
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
       reject(error);
     }
   });
