@@ -1,4 +1,4 @@
-# BE_NODEJS
+# BE_NODEJS - CRUD Basic with Book Management System (BMS) 
 
 Học Node.js cơ bản
  + Hiểu được cơ bản RESTful API là gì.
